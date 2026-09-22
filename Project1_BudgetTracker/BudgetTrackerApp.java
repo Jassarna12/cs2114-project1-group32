@@ -10,170 +10,439 @@ import java.util.Scanner;
  * does not perform budget calculations itself; it delegates to Income,
  * Budget, and InputValidator.
  */
-public class BudgetTrackerApp {
+public class BudgetTrackerApp
+{
     private Scanner scanner;
     private Income income;
     private Budget budget;
 
-    public BudgetTrackerApp() {
-        this.scanner = new Scanner(System.in);
+
+    /**
+     * Creates the app.
+     */
+    public BudgetTrackerApp()
+    {
+        scanner = new Scanner(System.in);
     }
 
-    public static void main(String[] args) {
+
+    /**
+     * Starts the program.
+     *
+     * @param args
+     *            command line arguments
+     */
+    public static void main(String[] args)
+    {
         BudgetTrackerApp app = new BudgetTrackerApp();
         app.run();
     }
 
-    /** Runs the console menu loop until the user chooses to finalize and exit. */
-    public void run() {
+
+    /**
+     * Runs the main menu.
+     */
+    public void run()
+    {
         System.out.println("=== Budget Tracker ===");
+
         setupIncome();
 
         boolean running = true;
-        while (running) {
-            System.out.println("\nMain Menu");
+
+        while (running)
+        {
+            System.out.println();
+            System.out.println("Main Menu");
             System.out.println("1) Manage expenses");
             System.out.println("2) View budget summary");
             System.out.println("3) Finalize and exit");
             System.out.print("Choose an option: ");
+
             String choice = scanner.nextLine().trim();
 
-            switch (choice) {
-                case "1":
-                    manageExpenses();
-                    break;
-                case "2":
-                    displaySummary();
-                    break;
-                case "3":
-                    displaySummary();
-                    System.out.println("\nFinal budget saved. Goodbye!");
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Please enter 1, 2, or 3.");
+            if (choice.equals("1"))
+            {
+                manageExpenses();
+            }
+            else if (choice.equals("2"))
+            {
+                displaySummary();
+            }
+            else if (choice.equals("3"))
+            {
+                displaySummary();
+
+                System.out.println();
+                System.out.println("Goodbye!");
+
+                running = false;
+            }
+            else
+            {
+                System.out.println("Please enter 1, 2, or 3.");
             }
         }
     }
 
-    /** Prompts for hours, wage, and tax rate (via InputValidator) and creates the Income object. */
-    public void setupIncome() {
-        System.out.println("\nLet's set up your monthly income.");
-        double hours = InputValidator.promptForPositiveDouble(scanner, "Hours worked this month: ");
-        double wage = InputValidator.promptForPositiveDouble(scanner, "Hourly wage ($): ");
-        double taxRate = InputValidator.promptForTaxRate(scanner, "Estimated tax rate (0 to 1, e.g. 0.15 for 15%): ");
+
+    /**
+     * Sets up income information.
+     */
+    public void setupIncome()
+    {
+        System.out.println();
+        System.out.println("Enter your monthly income information.");
+
+        double hours =
+            InputValidator.promptForPositiveDouble(
+                scanner,
+                "Hours worked this month: ");
+
+        double wage =
+            InputValidator.promptForPositiveDouble(
+                scanner,
+                "Hourly wage: ");
+
+        double taxRate =
+            InputValidator.promptForTaxRate(
+                scanner,
+                "Tax rate (example: 0.15): ");
 
         income = new Income(hours, wage, taxRate);
         budget = new Budget(income);
 
-        System.out.printf("Gross monthly income: $%,.2f%n", income.calculateGrossIncome());
-        System.out.printf("Estimated net monthly income: $%,.2f%n", income.calculateNetIncome());
+        System.out.println(
+            "Gross income: $" + income.calculateGrossIncome());
+
+        System.out.println(
+            "Net income: $" + income.calculateNetIncome());
     }
 
-    /** Loops the add/edit/remove expense menu until the user is done. */
-    public void manageExpenses() {
+
+    /**
+     * Runs the expense menu.
+     */
+    public void manageExpenses()
+    {
         boolean managing = true;
-        while (managing) {
-            System.out.println("\nManage Expenses");
+
+        while (managing)
+        {
+            System.out.println();
+            System.out.println("Manage Expenses");
             System.out.println("1) Add expense");
             System.out.println("2) Edit expense");
             System.out.println("3) Remove expense");
             System.out.println("4) View expenses");
-            System.out.println("5) Back to main menu");
+            System.out.println("5) Back");
             System.out.print("Choose an option: ");
+
             String choice = scanner.nextLine().trim();
 
-            switch (choice) {
-                case "1":
-                    addExpenseFlow();
-                    break;
-                case "2":
-                    editExpenseFlow();
-                    break;
-                case "3":
-                    removeExpenseFlow();
-                    break;
-                case "4":
-                    viewExpenses();
-                    break;
-                case "5":
-                    managing = false;
-                    break;
-                default:
-                    System.out.println("Please enter a number from 1 to 5.");
+            if (choice.equals("1"))
+            {
+                addExpenseFlow();
+            }
+            else if (choice.equals("2"))
+            {
+                editExpenseFlow();
+            }
+            else if (choice.equals("3"))
+            {
+                removeExpenseFlow();
+            }
+            else if (choice.equals("4"))
+            {
+                viewExpenses();
+            }
+            else if (choice.equals("5"))
+            {
+                managing = false;
+            }
+            else
+            {
+                System.out.println(
+                    "Please enter a number from 1 to 5.");
             }
         }
     }
 
-    /** Prints total spending, fixed vs. variable breakdown, remaining balance, and an over-budget warning if applicable. */
-    public void displaySummary() {
-        System.out.println("\n=== Budget Summary ===");
-        double total = budget.getTotalSpending();
-        double fixed = budget.getTotalFixed();
-        double variable = budget.getTotalVariable();
 
-        System.out.printf("Total spending:   $%,.2f%n", total);
-        System.out.printf("  Fixed:          $%,.2f (%s)%n", fixed, percentOf(fixed, total));
-        System.out.printf("  Variable:       $%,.2f (%s)%n", variable, percentOf(variable, total));
-        System.out.printf("Remaining balance: $%,.2f%n", budget.getRemainingBalance());
+    /**
+     * Displays the budget summary.
+     */
+    public void displaySummary()
+    {
+        System.out.println();
+        System.out.println("=== Budget Summary ===");
 
-        if (budget.isOverBudget()) {
-            System.out.println("Warning: your spending exceeds your net income this month.");
+        System.out.println(
+            "Total spending: $" + budget.getTotalSpending());
+
+        System.out.println(
+            "Fixed spending: $" + budget.getTotalFixed());
+
+        System.out.println(
+            "Variable spending: $" + budget.getTotalVariable());
+
+        System.out.println(
+            "Remaining balance: $" + budget.getRemainingBalance());
+
+        if (budget.isOverBudget())
+        {
+            System.out.println(
+                "Warning: your expenses exceed your income.");
         }
     }
 
-    // ---- private helpers (implementation detail, not part of the class contract) ----
 
-    private void addExpenseFlow() {
-        String category = InputValidator.promptForNonBlankString(scanner, "Category (e.g. Rent, Groceries): ");
-        double amount = InputValidator.promptForPositiveDouble(scanner, "Amount ($): ");
-        ExpenseType type = promptForExpenseType();
+    /**
+     * Adds an expense.
+     */
+    private void addExpenseFlow()
+    {
+        String category = promptForCategory();
+
+        double amount =
+            InputValidator.promptForPositiveDouble(
+                scanner,
+                "Amount: ");
+
+        String type = promptForExpenseType();
+
         budget.addExpense(category, amount, type);
-        System.out.println("Added/updated: " + category + " ($" + amount + ", " + type + ")");
+
+        System.out.println("Expense added.");
     }
 
-    private void editExpenseFlow() {
-        String category = InputValidator.promptForNonBlankString(scanner, "Category to edit: ");
-        ExpenseType type = promptForExpenseType();
-        double newAmount = InputValidator.promptForPositiveDouble(scanner, "New amount ($): ");
-        boolean found = budget.editExpense(category, type, newAmount);
-        System.out.println(found ? "Updated." : "No matching expense found.");
-    }
 
-    private void removeExpenseFlow() {
-        String category = InputValidator.promptForNonBlankString(scanner, "Category to remove: ");
-        ExpenseType type = promptForExpenseType();
-        boolean removed = budget.removeExpense(category, type);
-        System.out.println(removed ? "Removed." : "No matching expense found.");
-    }
-
-    private void viewExpenses() {
+    /**
+     * Edits an expense.
+     */
+    private void editExpenseFlow()
+    {
         List<Expense> expenses = budget.getExpenses();
-        if (expenses.isEmpty()) {
+
+        if (expenses.isEmpty())
+        {
+            System.out.println("No expenses to edit.");
+            return;
+        }
+
+        System.out.println();
+        System.out.println("Choose an expense to edit:");
+
+        for (int i = 0; i < expenses.size(); i++)
+        {
+            System.out.println(
+                (i + 1) + ") " + expenses.get(i));
+        }
+
+        System.out.print("Choose an option: ");
+
+        String input = scanner.nextLine().trim();
+
+        if (!InputValidator.isNumeric(input))
+        {
+            System.out.println("Please enter a valid number.");
+            return;
+        }
+
+        int choice = Integer.parseInt(input);
+
+        if (choice < 1 || choice > expenses.size())
+        {
+            System.out.println("Invalid option.");
+            return;
+        }
+
+        Expense selectedExpense =
+            expenses.get(choice - 1);
+
+        double newAmount =
+            InputValidator.promptForPositiveDouble(
+                scanner,
+                "New amount: ");
+
+        boolean found =
+            budget.editExpense(
+                selectedExpense.getCategory(),
+                selectedExpense.getType(),
+                newAmount);
+
+        if (found)
+        {
+            System.out.println("Expense updated.");
+        }
+        else
+        {
+            System.out.println("Expense not found.");
+        }
+    }
+
+
+    /**
+     * Removes an expense.
+     */
+    private void removeExpenseFlow()
+    {
+        List<Expense> expenses = budget.getExpenses();
+
+        if (expenses.isEmpty())
+        {
+            System.out.println("No expenses to remove.");
+            return;
+        }
+
+        System.out.println();
+        System.out.println("Choose an expense to remove:");
+
+        for (int i = 0; i < expenses.size(); i++)
+        {
+            System.out.println(
+                (i + 1) + ") " + expenses.get(i));
+        }
+
+        System.out.print("Choose an option: ");
+
+        String input = scanner.nextLine().trim();
+
+        if (!InputValidator.isNumeric(input))
+        {
+            System.out.println("Please enter a valid number.");
+            return;
+        }
+
+        int choice = Integer.parseInt(input);
+
+        if (choice < 1 || choice > expenses.size())
+        {
+            System.out.println("Invalid option.");
+            return;
+        }
+
+        Expense selectedExpense =
+            expenses.get(choice - 1);
+
+        boolean removed =
+            budget.removeExpense(
+                selectedExpense.getCategory(),
+                selectedExpense.getType());
+
+        if (removed)
+        {
+            System.out.println("Expense removed.");
+        }
+        else
+        {
+            System.out.println("Expense not found.");
+        }
+    }
+
+
+    /**
+     * Displays current expenses.
+     */
+    private void viewExpenses()
+    {
+        List<Expense> expenses = budget.getExpenses();
+
+        if (expenses.isEmpty())
+        {
             System.out.println("No expenses yet.");
             return;
         }
-        System.out.println("\nCurrent expenses:");
-        for (Expense e : expenses) {
-            System.out.println("  " + e);
+
+        System.out.println();
+        System.out.println("Current Expenses:");
+
+        for (Expense expense : expenses)
+        {
+            System.out.println(expense);
         }
     }
 
-    private ExpenseType promptForExpenseType() {
-        while (true) {
-            System.out.print("Type — 1) Fixed  2) Variable: ");
+
+    /**
+     * Gets fixed or variable expense type.
+     *
+     * @return expense type
+     */
+    private String promptForExpenseType()
+    {
+        while (true)
+        {
+            System.out.println("1) Fixed");
+            System.out.println("2) Variable");
+            System.out.print("Choose type: ");
+
             String choice = scanner.nextLine().trim();
-            if (choice.equals("1")) return ExpenseType.FIXED;
-            if (choice.equals("2")) return ExpenseType.VARIABLE;
+
+            if (choice.equals("1"))
+            {
+                return "fixed";
+            }
+            else if (choice.equals("2"))
+            {
+                return "variable";
+            }
+
             System.out.println("Please enter 1 or 2.");
         }
     }
 
-    /** Avoids divide-by-zero when total spending is zero (e.g. zero income, no expenses yet). */
-    private String percentOf(double part, double total) {
-        if (total == 0) {
-            return "N/A";
+
+    /**
+     * Displays category choices.
+     *
+     * @return selected category
+     */
+    private String promptForCategory()
+    {
+        while (true)
+        {
+            System.out.println();
+            System.out.println("Choose a category:");
+            System.out.println("1) Rent");
+            System.out.println("2) Utilities");
+            System.out.println("3) Car");
+            System.out.println("4) Groceries");
+            System.out.println("5) Entertainment");
+            System.out.println("6) Other");
+            System.out.print("Choose an option: ");
+
+            String choice = scanner.nextLine().trim();
+
+            if (choice.equals("1"))
+            {
+                return "Rent";
+            }
+            else if (choice.equals("2"))
+            {
+                return "Utilities";
+            }
+            else if (choice.equals("3"))
+            {
+                return "Car";
+            }
+            else if (choice.equals("4"))
+            {
+                return "Groceries";
+            }
+            else if (choice.equals("5"))
+            {
+                return "Entertainment";
+            }
+            else if (choice.equals("6"))
+            {
+                return "Other";
+            }
+            else
+            {
+                System.out.println(
+                    "Please enter a number from 1 to 6.");
+            }
         }
-        return String.format("%.0f%%", (part / total) * 100);
     }
 }
