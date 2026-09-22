@@ -1,9 +1,11 @@
 import student.TestCase;
+
+
 /**
  * Tests the Expense class.
  *
  * @author Jasjeet Sarna
- * @version 2026.09.21
+ * @version 2026.09.22
  */
 public class ExpenseTest extends TestCase
 {
@@ -11,7 +13,7 @@ public class ExpenseTest extends TestCase
 
 
     /**
-     * Sets up an expense before each test.
+     * Sets up an expense.
      */
     public void setUp()
     {
@@ -19,36 +21,24 @@ public class ExpenseTest extends TestCase
     }
 
 
-    /**
-     * Tests getCategory.
-     */
     public void testGetCategory()
     {
         assertEquals("Rent", expense.getCategory());
     }
 
 
-    /**
-     * Tests getAmount.
-     */
     public void testGetAmount()
     {
         assertEquals(800.0, expense.getAmount(), 0.01);
     }
 
 
-    /**
-     * Tests getType.
-     */
     public void testGetType()
     {
         assertEquals("fixed", expense.getType());
     }
 
 
-    /**
-     * Tests adding to an expense amount.
-     */
     public void testAddAmount()
     {
         expense.addAmount(200.0);
@@ -57,13 +47,18 @@ public class ExpenseTest extends TestCase
     }
 
 
-    /**
-     * Tests adding zero.
-     */
     public void testAddAmountZero()
     {
         expense.addAmount(0.0);
 
         assertEquals(800.0, expense.getAmount(), 0.01);
+    }
+
+
+    public void testToString()
+    {
+        assertEquals(
+            "Rent - $800.0 - fixed",
+            expense.toString());
     }
 }
