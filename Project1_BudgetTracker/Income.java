@@ -1,4 +1,21 @@
- public Income(double hoursWorked, double hourlyWage, double taxRate)
+public class Income
+{
+    private double hoursWorked;
+    private double hourlyWage;
+    private double taxRate;
+
+
+    /**
+     * Creates a new Income object.
+     *
+     * @param hoursWorked
+     *            hours worked
+     * @param hourlyWage
+     *            hourly wage
+     * @param taxRate
+     *            tax rate
+     */
+    public Income(double hoursWorked, double hourlyWage, double taxRate)
     {
         this.hoursWorked = hoursWorked;
         this.hourlyWage = hourlyWage;
@@ -7,7 +24,7 @@
 
 
     /**
-     * Calculates gross income before taxes
+     * Calculates gross income.
      *
      * @return gross income
      */
@@ -18,19 +35,20 @@
 
 
     /**
-     * Calculates income after estimated taxes.
+     * Calculates net income.
      *
      * @return net income
      */
     public double calculateNetIncome()
     {
         double grossIncome = calculateGrossIncome();
+
         return grossIncome - (grossIncome * taxRate);
     }
 
 
     /**
-     * Gets the hours worked
+     * Gets hours worked.
      *
      * @return hours worked
      */
@@ -41,7 +59,7 @@
 
 
     /**
-     * Gets the hourly wage
+     * Gets hourly wage.
      *
      * @return hourly wage
      */
@@ -52,7 +70,7 @@
 
 
     /**
-     * Gets the tax rate
+     * Gets tax rate.
      *
      * @return tax rate
      */
