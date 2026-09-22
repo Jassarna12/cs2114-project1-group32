@@ -1,3 +1,5 @@
+import student.TestCase;
+
 public class IncomeTest extends TestCase
 {
     private Income income;
@@ -8,73 +10,96 @@ public class IncomeTest extends TestCase
      */
     public void setUp()
     {
-        income = new Income(80, 20, 0.15);
+        income = new Income(80.0, 20.0, 0.15);
     }
 
 
     /**
-     * Tests calculating gross income.
+     * Tests gross income calculation.
      */
     public void testCalculateGrossIncome()
     {
-        assertEquals(1600.0, income.calculateGrossIncome(), 0.001);
+        assertEquals(
+            1600.0,
+            income.calculateGrossIncome(),
+            0.001);
     }
 
 
     /**
-     * Tests gross income when no hours were worked.
+     * Tests gross income with zero hours.
      */
     public void testCalculateGrossIncomeZeroHours()
     {
-        Income zeroIncome = new Income(0, 20, 0.15);
+        Income zeroIncome =
+            new Income(0.0, 20.0, 0.15);
 
-        assertEquals(0.0, zeroIncome.calculateGrossIncome(), 0.001);
+        assertEquals(
+            0.0,
+            zeroIncome.calculateGrossIncome(),
+            0.001);
     }
 
 
     /**
-     * Tests calculating net income.
+     * Tests net income calculation.
      */
     public void testCalculateNetIncome()
     {
-        assertEquals(1360.0, income.calculateNetIncome(), 0.001);
+        assertEquals(
+            1360.0,
+            income.calculateNetIncome(),
+            0.001);
     }
 
 
     /**
-     * Tests net income with a tax rate of zero.
+     * Tests net income with no tax.
      */
     public void testCalculateNetIncomeNoTax()
     {
-        Income noTax = new Income(80, 20, 0.0);
+        Income noTax =
+            new Income(80.0, 20.0, 0.0);
 
-        assertEquals(1600.0, noTax.calculateNetIncome(), 0.001);
+        assertEquals(
+            1600.0,
+            noTax.calculateNetIncome(),
+            0.001);
     }
 
 
     /**
-     * Tests getting the hours worked.
+     * Tests getHoursWorked().
      */
     public void testGetHoursWorked()
     {
-        assertEquals(80.0, income.getHoursWorked(), 0.001);
+        assertEquals(
+            80.0,
+            income.getHoursWorked(),
+            0.001);
     }
 
 
     /**
-     * Tests getting the hourly wage.
+     * Tests getHourlyWage().
      */
     public void testGetHourlyWage()
     {
-        assertEquals(20.0, income.getHourlyWage(), 0.001);
+        assertEquals(
+            20.0,
+            income.getHourlyWage(),
+            0.001);
     }
 
 
     /**
-     * Tests getting the tax rate.
+     * Tests getTaxRate().
      */
     public void testGetTaxRate()
     {
-        assertEquals(0.15, income.getTaxRate(), 0.001);
+        assertEquals(
+            0.15,
+            income.getTaxRate(),
+            0.001);
     }
 }
