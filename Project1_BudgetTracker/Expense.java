@@ -2,7 +2,7 @@
  * Represents one expense in the budget tracker.
  *
  * @author Jasjeet Sarna
- * @version 2026.09.21
+ * @version 2026.09.22
  */
 public class Expense
 {
@@ -15,9 +15,9 @@ public class Expense
      * Creates a new expense.
      *
      * @param category
-     *            the expense category
+     *            expense category
      * @param amount
-     *            the expense amount
+     *            expense amount
      * @param type
      *            fixed or variable
      */
@@ -30,9 +30,9 @@ public class Expense
 
 
     /**
-     * Returns the category.
+     * Gets the category.
      *
-     * @return the category
+     * @return category
      */
     public String getCategory()
     {
@@ -41,9 +41,9 @@ public class Expense
 
 
     /**
-     * Returns the amount.
+     * Gets the amount.
      *
-     * @return the amount
+     * @return amount
      */
     public double getAmount()
     {
@@ -52,9 +52,9 @@ public class Expense
 
 
     /**
-     * Returns the expense type.
+     * Gets the expense type.
      *
-     * @return the type
+     * @return type
      */
     public String getType()
     {
@@ -63,7 +63,7 @@ public class Expense
 
 
     /**
-     * Adds more money to the expense.
+     * Adds money to the expense.
      *
      * @param extra
      *            amount to add
@@ -71,5 +71,16 @@ public class Expense
     public void addAmount(double extra)
     {
         amount = amount + extra;
+    }
+
+
+    /**
+     * Returns expense information as text.
+     *
+     * @return expense information
+     */
+    public String toString()
+    {
+        return category + " - $" + amount + " - " + type;
     }
 }
