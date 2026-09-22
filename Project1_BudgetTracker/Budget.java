@@ -6,7 +6,7 @@ import java.util.List;
  * Stores expenses and performs budget calculations.
  *
  * @author Jasjeet Sarna
- * @version 2026.09.21
+ * @version 2026.09.22
  */
 public class Budget
 {
@@ -29,8 +29,6 @@ public class Budget
 
     /**
      * Adds an expense.
-     * If the same category and type already exist,
-     * the amounts are combined.
      *
      * @param category
      *            expense category
@@ -63,8 +61,8 @@ public class Budget
      * @param type
      *            expense type
      * @param newAmount
-     *            new expense amount
-     * @return true if the expense was found
+     *            new amount
+     * @return true if found
      */
     public boolean editExpense(
         String category,
@@ -98,7 +96,7 @@ public class Budget
      *            expense category
      * @param type
      *            expense type
-     * @return true if the expense was removed
+     * @return true if removed
      */
     public boolean removeExpense(String category, String type)
     {
@@ -179,7 +177,7 @@ public class Budget
 
 
     /**
-     * Calculates the remaining balance.
+     * Calculates remaining balance.
      *
      * @return remaining balance
      */
@@ -201,7 +199,7 @@ public class Budget
 
 
     /**
-     * Returns the list of expenses.
+     * Gets the list of expenses.
      *
      * @return expenses
      */
